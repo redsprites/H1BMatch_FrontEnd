@@ -1,8 +1,12 @@
+'use client';
 import React, { useState } from 'react';
-import axios from 'axios';
-import { Job } from '../types/Job';
+import { Job } from '@/types/Job';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Spinner } from '@nextui-org/spinner';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = 'localhost...';
 
 const MatchingJobs: React.FC = () => {
   const [filters, setFilters] = useState<{ column: string; value: string }[]>(
@@ -30,10 +34,17 @@ const MatchingJobs: React.FC = () => {
     setLoading(true);
     setError('');
     try {
-      const response = await axios.get<any>(`${API_BASE_URL}/jobs/match`, {
-        params: { filters: JSON.stringify(filters) },
-        withCredentials: true, // If your backend requires credentials
+      const queryParams = new URLSearchParams({
+        filters: JSON.stringify(filters),
       });
+
+      const response = await fetch(
+        `${API_BASE_URL}/jobs/match?${queryParams}`,
+        {
+          credentials: 'include', // Use 'include' if the backend requires credentials like cookies
+        }
+      );
+
       setJobs(response.data);
       console.log(response.data);
     } catch (error: any) {
@@ -45,13 +56,13 @@ const MatchingJobs: React.FC = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <section className="mt-5">
       <h1>Find Matching Jobs</h1>
-      <Form>
+      <form>
         {filters.map((filter, index) => (
-          <Form.Group key={index} className="mb-3">
-            <Form.Label>Filter {index + 1}</Form.Label>
-            <Form.Control
+          <div key={index} className="mb-3">
+            <label>Filter {index + 1}</label>
+            {/* <Form.Control
               type="text"
               placeholder="Column"
               value={filter.column}
@@ -67,36 +78,40 @@ const MatchingJobs: React.FC = () => {
               onChange={(e) =>
                 handleFilterChange(index, 'value', e.target.value)
               }
-            />
-          </Form.Group>
+            /> */}
+          </div>
         ))}
         <Button variant="secondary" onClick={handleAddFilter} className="mb-3">
           Add Filter
         </Button>
         <Button
-          variant="primary"
+          variant="default"
           onClick={fetchMatchingJobs}
           disabled={loading}
         >
-          {loading ? <Spinner animation="border" size="sm" /> : 'Search'}
+          {loading ? <Spinner size="sm" /> : 'Search'}
         </Button>
-      </Form>
+      </form>
       {error && (
-        <Alert variant="danger" className="mt-3">
+        <Alert variant={'destructive'} className="mt-3">
           {error}
         </Alert>
       )}
-      <ListGroup className="mt-3">
-        {jobs.map((job) => (
-          <ListGroup.Item key={job.id}>
-            <h5>{job.title}</h5>
-            <p>{job.description}</p>
-            {/* Add other job details here */}
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Container>
+      {/* <ListGroup className="mt-3">
+        {jobs.map((job) => {
+          return (
+            <ListGroup.Item key={job.id}>
+              <h5>{job.title}</h5>
+              <p>{job.description}</p>
+            </ListGroup.Item>
+          );
+        })}
+      </ListGroup> */}
+    </section>
   );
 };
+{
+  /* Add other job details here */
+}
 
 export default MatchingJobs;

@@ -1,7 +1,6 @@
 // src/components/SearchBar.tsx
 
 import React, { useState } from 'react';
-import { InputGroup, FormControl, Button } from 'react-bootstrap';
 
 interface SearchBarProps {
   onSearch: (title: string) => void;

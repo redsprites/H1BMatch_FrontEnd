@@ -4,7 +4,6 @@ import { useAuth } from '@clerk/clerk-react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { SignedOut, SignInButton } from '@clerk/nextjs';
 
 export default function LandingPage() {
   const { isSignedIn } = useAuth();
@@ -22,7 +21,7 @@ export default function LandingPage() {
       <header className="container mx-auto px-4 py-8">
         <nav className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-blue-600">JobMatcher</h1>
-          <Link href="/sign-in">
+          <Link href="/signin">
             <Button variant="outline">Sign In</Button>
           </Link>
         </nav>
@@ -35,7 +34,7 @@ export default function LandingPage() {
           the best job opportunities. Upload your resume, and we'll connect you
           with companies looking for your unique skills and experience.
         </p>
-        <Link href="/sign-in">
+        <Link href="/signin">
           <Button size="lg" className="text-lg px-8 py-4">
             Sign In and Match with Jobs
           </Button>

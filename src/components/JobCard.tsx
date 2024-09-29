@@ -2,7 +2,6 @@
 
 import React from 'react';
 import './JobCard.css';
-import { Card, Button } from 'react-bootstrap';
 import { Job } from '../types/Job';
 
 interface JobCardProps {
@@ -14,17 +13,20 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
     <Card className="mb-3">
       <Card.Body>
         <Card.Title>{job.title}</Card.Title>
-        <Card.Subtitle className="mb-2 text-muted">
-          {job.company}
-        </Card.Subtitle>
+        <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
         <Card.Text>{job.description}</Card.Text>
         <Card.Text>
           <strong>Location:</strong> {job.city}, {job.state}
         </Card.Text>
         <Card.Text>
-          <strong>Publication Date:</strong> {new Date(job.date_posted).toLocaleDateString()}
+          <strong>Publication Date:</strong>{' '}
+          {new Date(job.date_posted).toLocaleDateString()}
         </Card.Text>
-        {job.is_remote && <Card.Text><strong>Remote:</strong> Yes</Card.Text>}
+        {job.is_remote && (
+          <Card.Text>
+            <strong>Remote:</strong> Yes
+          </Card.Text>
+        )}
         <Button variant="primary" href={job.job_url} target="_blank">
           View Job
         </Button>
